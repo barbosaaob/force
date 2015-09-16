@@ -1,9 +1,13 @@
 """
-Force-Scheme
+Force
+
+Force multidimensional projection technique.
+http://www.lcad.icmc.usp.br/%7Enonato/pubs/TejadaEtAl.pdf
 """
 
 from __future__ import print_function
 from projection import projection
+
 try:
     import numpy as np
     import scipy.spatial.distance as dist
@@ -15,8 +19,14 @@ except ImportError as msg:
 
 
 class Force(projection.Projection):
+    """
+    Force projection.
+    """
     def __init__(self, data, data_class, dtype="data", delta_frac=8,
                  niter=50, tol=1.0e-6):
+        """
+        Class initialization.
+        """
         projection.Projection.__init__(self, data, data_class, 2)
         self.dtype = dtype
         self.delta_frac = delta_frac
@@ -25,10 +35,12 @@ class Force(projection.Projection):
 
     def project(self):
         """
-        Projection
+        Project method.
+
+        Projection itself.
         """
         assert type(self.data) is np.ndarray, \
-            "*** ERROR (Force-Scheme): project input must be of numpy.ndarray \
+            "*** ERROR (Force): project input must be of numpy.ndarray \
                 type."
 
         # number of instances, dimension of the data
@@ -43,9 +55,9 @@ class Force(projection.Projection):
         elif self.dtype == "dmat":
             distRn = self.data
         else:
-            print("*** ERROR (Force-Scheme): Undefined data type.")
+            print("*** ERROR (Force): Undefined data type.")
         assert type(distRn) is np.ndarray and distRn.shape == (ninst, ninst), \
-            "*** ERROR (Force-Scheme): project input must be numpy.ndarray \
+            "*** ERROR (Force): project input must be numpy.ndarray \
                 type."
 
         idx = np.random.permutation(ninst)
@@ -76,7 +88,7 @@ def run():
     import sys
     print("Loading data set... ", end="")
     sys.stdout.flush()
-    data_file = np.loadtxt("mammals.data", delimiter=",")
+    data_file = np.loadtxt("iris.data")
     print("Done.")
     n, dim = data_file.shape
     data = data_file[:, range(dim - 1)]
